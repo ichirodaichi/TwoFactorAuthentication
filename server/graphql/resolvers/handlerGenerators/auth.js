@@ -1,8 +1,9 @@
 import User from '../../../models/user';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import nodemailer from "nodemailer";
 import { generateNumber } from '../../../utils/utils';
+import nodemailer from "nodemailer";
+
 
 export async function createUser(args) {
     try {
@@ -51,11 +52,11 @@ export async function login(args) {
 
         var authNumber = generateNumber();
 
-        var transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: 'ichirodaichi0829@gmail.com',
-                pass: 'devmaster'
+                pass: 'ypnmbbqxphmcuyix'
             }
         });
 
@@ -63,10 +64,10 @@ export async function login(args) {
             from: 'ichirodaichi0829@gmail.com',
             to: args.email,
             subject: 'Sending Email using Node.js',
-            text: authNumber
+            text: authNumber.toString()
         };
 
-        transporter.sendMail(mailOptions, function(error, info){
+        await transporter.sendMail(mailOptions, function(error, info){
             if (error) {
                 console.log(error);
             } else {
@@ -76,7 +77,7 @@ export async function login(args) {
 
         const token = jwt.sign({ id: user._id }, "mysecret");
 
-        return { token, password: null, ...user._doc, authNumber }
+        return { token, password: null, ...user._doc, authNumber : authNumber.toString() }
     }
     catch (err) {
         throw err;

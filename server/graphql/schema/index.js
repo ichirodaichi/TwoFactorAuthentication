@@ -5,7 +5,7 @@ type User {
     _id: ID!
     email: String!
     token: String!
-    authNumber: Int
+    authNumber: String!
 }
 input UserInput {
     email: String!
